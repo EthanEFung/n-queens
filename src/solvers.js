@@ -28,6 +28,14 @@ const genRowPermutations = function(n) {//generates n unique rows
   return rowsArray;
 };
 
+const looseIndexOf = function(array, value) {
+  for (var i = 0; i < array.length; i++) {
+    if (value == array[i]) {
+      return i;
+    }
+  }
+  return -1;
+};
 
 
 const factorial = function(n) {
@@ -68,25 +76,25 @@ window.findNRooksSolution = function(n) {
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
-  // let solution = []; //fixme
-  // let rowsArray = genRowPermutations(n);
+  let solution = []; //fixme
+  let rowsArray = genRowPermutations(n);
 
-  // const recursiveTree = function (rowPoss, rowsSoFar) {
-  //   if (rowPoss.length === 0) {
-  //     solution.push(rowsSoFar);//for counting, we push to solutions
-  //   } else {
-  //     for (let i = 0; i < rowPoss.length; i++) {
-  //       let possCopy = rowPoss.slice();
-  //       let usedCopy = rowsSoFar.slice();
-  //       usedCopy.push(possCopy.splice(i, 1)[0]);
-  //       recursiveTree(possCopy, usedCopy);      
-  //     }
-  //   }
-  // };
+  const recursiveTree = function (rowPoss, rowsSoFar) {
+    if (rowPoss.length === 0) {
+      solution.push(rowsSoFar);//for counting, we push to solutions
+    } else {
+      for (let i = 0; i < rowPoss.length; i++) {
+        let possCopy = rowPoss.slice();
+        let usedCopy = rowsSoFar.slice();
+        usedCopy.push(possCopy.splice(i, 1)[0]);
+        recursiveTree(possCopy, usedCopy);      
+      }
+    }
+  };
   
-  // recursiveTree(rowsArray, []);
-  // let solutionCount = solution.length;
-  let solutionCount = factorial(n);//lawl math
+  recursiveTree(rowsArray, []);
+  let solutionCount = solution.length;
+  // let solutionCount = factorial(n);//lawl math
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount;
 };
@@ -129,11 +137,63 @@ window.findNQueensSolution = function(n) {
   }
 };
 
+
+/*
+  recursiveTree([[1,0], [0,1]], []) // [[1,0], [0,1]]
+    passes in a nested array, and returns a nested array.
+    
+*/
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
+
+
 window.countNQueensSolutions = function(n) {
+  // if(n===0 || n===1){
+  //   return 1;
+  // }
+  // let solution = []; 
+  // let rowsArray = genRowPermutations(n);
+  
+  // const recursiveTree = function (rowPoss, rowsSoFar) {
+  //   if (rowsSoFar.length > 1) {
+  //     let currentBoard = new Board(rowsSoFar);
+  //     if (currentBoard.hasAnyMajorDiagonalConflicts() || currentBoard.hasAnyMinorDiagonalConflicts()) {
+  //       return;
+  //     }  
+  //   }
+
+  //   if (rowPoss.length === 0) {
+  //     return solution.push(rowsSoFar);//for counting, we push to solutions
+  //   } else {      
+  //     for (let i = 0; i < rowPoss.length; i++) {
+  //       let possCopy = rowPoss.slice();
+  //       let usedCopy = rowsSoFar.slice();
+  //       usedCopy.push(possCopy.splice(i, 1)[0]);
+  //       recursiveTree(possCopy, usedCopy);      
+  //     }
+  //   }
+  // };
+  
+  // const p = new Parallel(rowsArray);
+  // p.map(function(data){
+  //   let possCopy = rowsArray.slice();
+  //   let dataIndex = looseIndexOf(possCopy,data); 
+  //   console.log(dataIndex);
+  //   possCopy.splice(dataIndex,1);
+  //   console.log(data);
+  //   return recursiveTree(possCopy, data);     
+  // });
+  // console.log(p.data, 'this is p');
+  // // recursiveTree(rowsArray, []);
+  // let solutionCount = solution.length;
+
+  // console.log('Number of solutions for ' + n + ' queens:', solutionCount);
+  // return solutionCount;
+
+
+
   let solution = []; //fixme
   let rowsArray = genRowPermutations(n);
-
+  
   const recursiveTree = function (rowPoss, rowsSoFar) {
     if (rowsSoFar.length > 1) {
       let currentBoard = new Board(rowsSoFar);

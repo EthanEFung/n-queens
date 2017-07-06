@@ -140,12 +140,25 @@
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
+      let majorDiagonal = {};
+      let rows = this.rows();
+      for (let i = 0; i < this.get('n'); i++) {
+        for (let j = 0; j < this.get('n'); j++) {
+          let diagonalIndex = this._getFirstRowColumnIndexForMajorDiagonalOn(i, j);
+          majorDiagonal[diagonalIndex] = majorDiagonal[diagonalIndex] || [];
+          majorDiagonal[diagonalIndex].push(rows[i][j]);          
+        }
+      }
 
       var accumulator = false;
-      for (var i = -(this.get('n') - 2); i < this.get('n')-1; i++) {
-        accumulator = accumulator || this.hasMajorDiagonalConflictAt(i);
+      for (var i = -(this.get('n') - 2); i < this.get('n') - 1; i++) {
+        if ( 1 < majorDiagonal[i].reduce(function(sum, item) {
+          return sum + item;
+        }, 0)) {
+          return true;
+        }
       }
-      return accumulator;
+      return false;
     },
 
 
@@ -172,12 +185,32 @@
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
-      var accumulator = false;
+      // var accumulator = false;
+      // var numDiagonals = this.get('n') * 2 - 2;
+      // for (var i = 1; i < numDiagonals; i++) {
+      //   accumulator = accumulator || this.hasMinorDiagonalConflictAt(i);
+      // }
+      // return accumulator;
+
+      let minorDiagonal = {};
+      let rows = this.rows();
+      for (let i = 0; i < this.get('n'); i++) {
+        for (let j = 0; j < this.get('n'); j++) {
+          let diagonalIndex = this._getFirstRowColumnIndexForMinorDiagonalOn(i, j);
+          minorDiagonal[diagonalIndex] = minorDiagonal[diagonalIndex] || [];
+          minorDiagonal[diagonalIndex].push(rows[i][j]);          
+        }
+      }
+      let accumulator = false;
       var numDiagonals = this.get('n') * 2 - 2;
       for (var i = 1; i < numDiagonals; i++) {
-        accumulator = accumulator || this.hasMinorDiagonalConflictAt(i);
+        if (1 < minorDiagonal[i].reduce(function(sum, item) {
+          return sum + item;
+        }, 0)) {
+          return true;
+        }
       }
-      return accumulator;
+      return false;
     }
 
     /*--------------------  End of Helper Functions  ---------------------*/
