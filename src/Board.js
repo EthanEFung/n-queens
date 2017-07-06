@@ -142,7 +142,7 @@
     hasAnyMajorDiagonalConflicts: function() {
 
       var accumulator = false;
-      for (var i = -(this.get('n') - 1); i < this.get('n'); i++) {
+      for (var i = -(this.get('n') - 2); i < this.get('n')-1; i++) {
         accumulator = accumulator || this.hasMajorDiagonalConflictAt(i);
       }
       return accumulator;
@@ -173,8 +173,8 @@
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
       var accumulator = false;
-      var numDiagonals = this.get('n') * 2 - 1;
-      for (var i = 0; i < numDiagonals; i++) {
+      var numDiagonals = this.get('n') * 2 - 2;
+      for (var i = 1; i < numDiagonals; i++) {
         accumulator = accumulator || this.hasMinorDiagonalConflictAt(i);
       }
       return accumulator;

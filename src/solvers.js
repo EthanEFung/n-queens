@@ -12,16 +12,10 @@
 
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n rooks placed such that none of them can attack each other
-
-
-
-window.findNRooksSolution = function(n) {
-  let solution = []; //fixme
+const genRowPermutations = function(n) {
   let rowsArray = [];
-  
   for (let i = 0; i < n; i++) {
     let row = [];
-  //  debugger;
     for (let j = 0; j < n; j++) {
       if (i === j) {
         row.push(1);
@@ -29,12 +23,30 @@ window.findNRooksSolution = function(n) {
         row.push(0);
       }
     }
-
     rowsArray.push(row);
   }
+  return rowsArray;
+};
 
+
+
+const factorial = function(n) {
+  if (n === 0) {
+    return 1;
+  } else if (n === 1) {
+    return n;
+  } else {
+    return n * factorial(n - 1);
+  } 
+};
+
+window.findNRooksSolution = function(n) {
+  let solution = []; //fixme
+  let rowsArray = genRowPermutations(n);
+  
   const recursiveTree = function (rowPoss, rowsSoFar) {
     if (rowPoss.length === 0) {
+      console.log('Single solution for ' + n + ' rooks:', JSON.stringify(rowsSoFar));
       return rowsSoFar; //solution.push(rowsSoFar);//for counting, we push to solutions
     } else {
       for (let i = 0; i < rowPoss.length; i++) {
@@ -45,39 +57,19 @@ window.findNRooksSolution = function(n) {
       }
     }
   };
+
   
   return recursiveTree(rowsArray, []);
 
 
 
-
-
-
-
-
-  console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution[0]));
-  return solution[0];
 };
 
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
   let solution = []; //fixme
-  let rowsArray = [];
-  
-  for (let i = 0; i < n; i++) {
-    let row = [];
-  //  debugger;
-    for (let j = 0; j < n; j++) {
-      if (i === j) {
-        row.push(1);
-      } else {
-        row.push(0);
-      }
-    }
-
-    rowsArray.push(row);
-  }
+  let rowsArray = genRowPermutations(n);
 
   const recursiveTree = function (rowPoss, rowsSoFar) {
     if (rowPoss.length === 0) {
@@ -100,29 +92,16 @@ window.countNRooksSolutions = function(n) {
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function(n) {
-  let solution = []; //fixme
-  let rowsArray = [];
-  
-  for (let i = 0; i < n; i++) {
-    let row = [];
-  //  debugger;
-    for (let j = 0; j < n; j++) {
-      if (i === j) {
-        row.push(1);
-      } else {
-        row.push(0);
-      }
-    }
+  let solution = [];
+  let rowsArray = genRowPermutations(n);
 
-    rowsArray.push(row);
-  }
   let validBoard = undefined;
   const recursiveTree = function (rowPoss, rowsSoFar) {
     let currentBoard = new Board(rowsSoFar);
     if (currentBoard.hasAnyMajorDiagonalConflicts() || currentBoard.hasAnyMinorDiagonalConflicts()) {
       return;
     }    
-    if (!(currentBoard.hasAnyMajorDiagonalConflicts() || currentBoard.hasAnyMinorDiagonalConflicts()) && rowPoss.length === 0) {
+    if (rowPoss.length === 0) {
       return rowsSoFar; //solution.push(rowsSoFar);//for counting, we push to solutions
     } else {
       for (let i = 0; i < rowPoss.length; i++) {
@@ -139,48 +118,27 @@ window.findNQueensSolution = function(n) {
   
   solution = recursiveTree(rowsArray, []);
   if (solution) {
+    console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
     return solution;
   } else {
     let obj = {};
     obj.n = n;
     return obj;
   }
-
-
-
-
-
-
-
-  console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution[0]));
-  return solution[0];
 };
 
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
 window.countNQueensSolutions = function(n) {
   let solution = []; //fixme
-  let rowsArray = [];
-  
-  for (let i = 0; i < n; i++) {
-    let row = [];
-  //  debugger;
-    for (let j = 0; j < n; j++) {
-      if (i === j) {
-        row.push(1);
-      } else {
-        row.push(0);
-      }
-    }
+  let rowsArray = genRowPermutations(n);
 
-    rowsArray.push(row);
-  }
 
   const recursiveTree = function (rowPoss, rowsSoFar) {
     let currentBoard = new Board(rowsSoFar);
     if (currentBoard.hasAnyMajorDiagonalConflicts() || currentBoard.hasAnyMinorDiagonalConflicts()) {
       return;
     }    
-    if (!(currentBoard.hasAnyMajorDiagonalConflicts() || currentBoard.hasAnyMinorDiagonalConflicts()) && rowPoss.length === 0) {
+    if (rowPoss.length === 0) {
       return solution.push(rowsSoFar);//for counting, we push to solutions
     } else {
       for (let i = 0; i < rowPoss.length; i++) {
